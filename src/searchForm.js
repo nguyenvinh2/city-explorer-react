@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { Fragment } from 'react';
+import './result.css';
 
-export default class SearchForm extends Component {
+export class SearchForm extends Component {
   constructor(props) {
     super(props);
     this.state = { value: '' };
@@ -22,10 +23,10 @@ export default class SearchForm extends Component {
       <Fragment>
         <form onSubmit={this.onSubmit}>
           <label>
-            Location:
-          <input type="text" value={this.state.value} onChange={this.onChange} />
+            Search for a location
+          <input type="text" value={this.state.value} onChange={this.onChange} placeholder="Enter a location here"/>
           </label>
-          <input type="submit" value="Submit" />
+          <button>Explore!</button>
         </form>
       </Fragment>
     )
