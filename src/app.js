@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import { Fragment } from 'react';
+import { SearchForm } from './searchForm';
+import { IntroForm } from './introForm';
 import './App.css';
 
 class App extends Component {
@@ -22,6 +24,7 @@ class Intro extends Component {
     return (
       <Fragment>
         <Header/>
+        <IntroForm/>
       </Fragment>
     )
   }
@@ -30,7 +33,10 @@ class Intro extends Component {
 class Header extends Component {
   render() {
     return (
-      <h1>City Explorer</h1>
+      <Fragment>
+        <h1>City Explorer</h1>
+        <p>Enter a location below to learn about the weather, events, restaurants, movies, and more!</p>
+      </Fragment>
     )
   }
 }
@@ -48,7 +54,13 @@ class Main extends Component {
 }
 
 class Search extends Component {
-
+  render() {
+    return (
+      <Fragment>
+        <SearchForm/>
+      </Fragment>
+    )
+  }
 }
 
 class Map extends Component {
