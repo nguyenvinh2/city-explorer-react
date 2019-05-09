@@ -10,8 +10,8 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      geocodeBoolean: true,
-      backendBoolean: true, 
+      geocodeBoolean: false,
+      backendBoolean: false, 
       backendUrl: '',
       geocodeKey: '',
     }
@@ -69,11 +69,14 @@ class Main extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      location: '',
+      location: null,
       geocodeKey: this.props.geocodeKey,
       backendUrl: this.props.backendUrl,
-      locationUrl: '',
-      result:''
+      locationUrl: null,
+      result: null,
+      weather: null,
+      yelp: null,
+      eventbrite: null
     }
 
     this.onSearchChange = (event) => {
@@ -82,7 +85,8 @@ class Main extends Component {
   
     this.onSearchSubmit = (event) => {
       event.preventDefault();
-      this.setState({locationUrl:''})
+      this.setState({result: null})
+      this.setState({locationUrl:null})
       this.getLocation();
     }
 
@@ -94,7 +98,39 @@ class Main extends Component {
           this.setState({
             result: res.body, 
             locationUrl:`https://maps.googleapis.com/maps/api/staticmap?center=${res.body.latitude}%2c%20${res.body.longitude}&zoom=13&size=600x300&maptype=roadmap&key=AIzaSyBGHpXSm0MLinRX3HdexJ4JiUDDam3NW50`});
+            this.getWeather(res);
+            this.getYelp(res);
+            this.getEventbrite(res);
         });
+    }
+
+    this.getWeather = (res) => {
+      return superagent
+        .get(`https://city-explorer-vinh-jhia.herokuapp.com/weather`)
+        .query({ data: res.body })
+        .then(res => {
+          this.setState({weather: res.body});
+        })
+    }
+
+    this.getYelp = (res) =>
+    {
+      return superagent
+      .get(`https://city-explorer-vinh-jhia.herokuapp.com/yelp`)
+      .query({ data: res.body })
+      .then(res => {
+        this.setState({yelp: res.body});
+      })
+    }
+
+    this.getEventbrite = (res) =>
+    {
+      return superagent
+      .get(`https://city-explorer-vinh-jhia.herokuapp.com/events`)
+      .query({ data: res.body })
+      .then(res => {
+        this.setState({yelp: res.body});
+      })
     }
   }
 
@@ -102,8 +138,8 @@ class Main extends Component {
     return (
       <Fragment>
         <SearchForm location = {this.state.location} onSearchChange = {this.onSearchChange} onSearchSubmit = {this.onSearchSubmit}/>
-        <Map geocodeKey = {this.state.geocodeKey} location = {this.state.locationUrl}/>
-        <SearchResult />
+        <Map location = {this.state.locationUrl}/>
+        <SearchResult result = {this.state.result} weather = {this.state.weather} yelp = {this.state.yelp}/>
       </Fragment>
     )
   }
@@ -118,7 +154,5 @@ class Map extends Component {
     )
   }
 }
-
-
 
 export default App;
