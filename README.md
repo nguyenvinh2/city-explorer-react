@@ -2,12 +2,15 @@
 
 ## Feature Completion
 
-### Scaffold
+### Scaffold - Wednesday
 
-Estimate of time needed to complete: 120
+    Estimate of time needed to complete: 120
 
-Start time: 0900
+    Start time: 0900
 
-Finish time: 1130
+    Finish time: 1130
 
-Actual time needed to complete: 150
+    Actual time needed to complete: 150
+
+### Server Routing
+
