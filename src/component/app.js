@@ -76,7 +76,9 @@ class Main extends Component {
       result: null,
       weather: null,
       yelp: null,
-      eventbrite: null
+      eventbrite: null,
+      movies: null,
+      trails: null,
     }
 
     this.onSearchChange = (event) => {
@@ -97,10 +99,12 @@ class Main extends Component {
         .then(res => {
           this.setState({
             result: res.body, 
-            locationUrl:`https://maps.googleapis.com/maps/api/staticmap?center=${res.body.latitude}%2c%20${res.body.longitude}&zoom=13&size=600x300&maptype=roadmap&key=AIzaSyBGHpXSm0MLinRX3HdexJ4JiUDDam3NW50`});
+            locationUrl:`https://maps.googleapis.com/maps/api/staticmap?center=${res.body.latitude}%2c%20${res.body.longitude}&zoom=13&size=600x300&maptype=roadmap&key=`});
             this.getWeather(res);
             this.getYelp(res);
             this.getEventbrite(res);
+            this.getMovies(res);
+            this.getTrails(res);
         });
     }
 
@@ -129,7 +133,27 @@ class Main extends Component {
       .get(`https://city-explorer-vinh-jhia.herokuapp.com/events`)
       .query({ data: res.body })
       .then(res => {
-        this.setState({yelp: res.body});
+        this.setState({eventbrite: res.body});
+      })
+    }
+
+    this.getMovies = (res) =>
+    {
+      return superagent
+      .get(`https://city-explorer-vinh-jhia.herokuapp.com/movies`)
+      .query({ data: res.body })
+      .then(res => {
+        this.setState({movies: res.body});
+      })
+    }
+
+    this.getTrails = (res) =>
+    {
+      return superagent
+      .get(`https://city-explorer-vinh-jhia.herokuapp.com/trails`)
+      .query({ data: res.body })
+      .then(res => {
+        this.setState({trails: res.body});
       })
     }
   }
@@ -139,7 +163,7 @@ class Main extends Component {
       <Fragment>
         <SearchForm location = {this.state.location} onSearchChange = {this.onSearchChange} onSearchSubmit = {this.onSearchSubmit}/>
         <Map location = {this.state.locationUrl}/>
-        <SearchResult result = {this.state.result} weather = {this.state.weather} yelp = {this.state.yelp}/>
+        <SearchResult result = {this.state.result} weather = {this.state.weather} yelp = {this.state.yelp} eventbrite = {this.state.eventbrite} movies = {this.state.movies} trails = {this.state.trails}/>
       </Fragment>
     )
   }

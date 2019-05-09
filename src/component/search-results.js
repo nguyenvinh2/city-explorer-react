@@ -18,7 +18,7 @@ export class SearchResult extends Component {
         {header}
         <Weather results = {this.props.weather}/>
         <Yelp results = {this.props.yelp}/>
-        <Eventbrite results = {this.props.evenbrite}/>
+        <Eventbrite results = {this.props.eventbrite}/>
         <Movies results = {this.props.movies}/>
         <Trails results = {this.props.trails}/>
       </Fragment>
