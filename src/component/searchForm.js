@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Fragment } from 'react';
-import './result.css';
 
 export class SearchForm extends Component {
   constructor(props) {

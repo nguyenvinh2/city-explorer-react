@@ -1,45 +1,47 @@
 import React, { Component } from 'react';
 import { Fragment } from 'react';
-import { SearchForm } from './searchForm';
-import { IntroForm } from './introForm';
+import { SearchForm } from './component/searchForm';
+import { IntroForm } from './component/introForm';
 import './result.css';
 
 class App extends Component {
   constructor(props) {
     super(props);
-    this.state = {geocodeBoolean: false, backendBoolean: false}
+    this.state = {geocodeBoolean: false, backendBoolean: false, backendUrl: '', geocodeKey: ''}
     
-    this.onGeocodeEnter = () => {
-
+    this.onGeocodeSubmit = (event) => {
+      console.log(this.state.geocodeKey);
+      this.setState({geocodeBoolean:true});
+      event.preventDefault();
+    }
+    this.onBackendSubmit = (event) => {
+      console.log(this.state.backendUrl);
+      this.setState({backendBoolean:true});
+      event.preventDefault();
+    }
+    
+    this.onChangeBackend = (event) => {
+      this.setState({backendUrl: event.target.value});
     }
 
-    this.onBackendEnter = () => {
-
+    this.onChangeGeocode = (event) => {
+      this.setState({geocodeKey: event.target.value});
     }
 
   }
+
   render() {
     const showSearch = this.state.geocodeBoolean && this.state.backendBoolean;
     let page;
     if (showSearch) {
       page = <Main/>;
     } else {
-      page = <Intro/>;
+      page = <IntroForm onGeocodeSubmit = {this.onGeocodeSubmit} onBackendSubmit= {this.onBackendSubmit} onChangeBackend = {this.onChangeBackend} onChangeGeocode = {this.onChangeGeocode} backendBoolean = {this.state.backendBoolean} geocodeBoolean = {this.state.geocodeBoolean}/>;
     }
     return (
       <Fragment>
         <Header />
         {page}
-      </Fragment>
-    )
-  }
-}
-
-class Intro extends Component {
-  render() {
-    return (
-      <Fragment>
-        <IntroForm />
       </Fragment>
     )
   }
