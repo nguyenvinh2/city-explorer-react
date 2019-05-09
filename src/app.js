@@ -5,11 +5,31 @@ import { IntroForm } from './introForm';
 import './result.css';
 
 class App extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {geocodeBoolean: false, backendBoolean: false}
+    
+    this.onGeocodeEnter = () => {
+
+    }
+
+    this.onBackendEnter = () => {
+
+    }
+
+  }
   render() {
+    const showSearch = this.state.geocodeBoolean && this.state.backendBoolean;
+    let page;
+    if (showSearch) {
+      page = <Main/>;
+    } else {
+      page = <Intro/>;
+    }
     return (
       <Fragment>
         <Header />
-        <Main />
+        {page}
       </Fragment>
     )
   }
@@ -19,7 +39,6 @@ class Intro extends Component {
   render() {
     return (
       <Fragment>
-        <Header />
         <IntroForm />
       </Fragment>
     )
