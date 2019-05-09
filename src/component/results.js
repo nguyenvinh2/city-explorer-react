@@ -76,7 +76,7 @@ export class Movies extends Component {
           <li key = {i}>
             <p>{this.props.results[i].title} was released on {this.props.results[i].released_on}. Out of {this.props.results[i].total_votes}, {this.props.results[i].title} has an average vote of {this.props.results[i].average_votes} and a popularity score of {this.props.results[i].popularity}</p>
             <p>{this.props.results[i].summary}</p>
-            <img src={this.props.results[i].image_url}/>
+            <img src={this.props.results[i].image_url} alt = "Movies"/>
             <p>{this.props.results[i].overview}</p>
           </li>
           )
@@ -101,7 +101,7 @@ export class Trails extends Component {
           <li key = {i}>
             <p>Hike Name: {this.props.results[i].name}, Location: {this.props.results[i].location}, Distance: {this.props.results[i].length}</p>
             <p>On {this.props.results[i].condition_date} at {this.props.results[i].condition_time}, trail conditions were reported as: {this.props.results[i].conditions}</p>
-            <p>This trail has a rating of {this.props.results[i].stars} (out of {this.props.results[i].star_votes})</p>
+            <p>This trail has a rating of {this.props.results[i].stars} stars (out of {this.props.results[i].star_votes} votes)</p>
             <p>{this.props.results[i].summary}</p>
  
           </li>
