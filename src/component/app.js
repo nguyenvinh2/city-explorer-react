@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Fragment } from 'react';
 import { SearchForm } from './search-form';
 import { IntroForm } from './intro-form';
+import { SearchResult } from './search-results';
 import superagent from 'superagent';
 import '../result.css';
 
@@ -9,8 +10,8 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      geocodeBoolean: false,
-      backendBoolean: false, 
+      geocodeBoolean: true,
+      backendBoolean: true, 
       backendUrl: '',
       geocodeKey: '',
     }
@@ -81,17 +82,18 @@ class Main extends Component {
   
     this.onSearchSubmit = (event) => {
       event.preventDefault();
+      this.setState({locationUrl:''})
       this.getLocation();
     }
 
     this.getLocation = () => {
       return superagent
-        .get(`${this.state.backendUrl}/location?data={data:${this.state.location}}`)
+        .get(`https://city-explorer-vinh-jhia.herokuapp.com/location`)
+        .query({data:this.state.location})
         .then(res => {
-          console.log(res);
           this.setState({
             result: res.body, 
-            locationUrl:`https://maps.googleapis.com/maps/api/staticmap?center=${res.body.latitude}%2c%20${res.body.longitude}&zoom=13&size=600x300&maptype=roadmap&key=${this.state.geocodeKey}`});
+            locationUrl:`https://maps.googleapis.com/maps/api/staticmap?center=${res.body.latitude}%2c%20${res.body.longitude}&zoom=13&size=600x300&maptype=roadmap&key=AIzaSyBGHpXSm0MLinRX3HdexJ4JiUDDam3NW50`});
         });
     }
   }
@@ -101,7 +103,7 @@ class Main extends Component {
       <Fragment>
         <SearchForm location = {this.state.location} onSearchChange = {this.onSearchChange} onSearchSubmit = {this.onSearchSubmit}/>
         <Map geocodeKey = {this.state.geocodeKey} location = {this.state.locationUrl}/>
-        <Result />
+        <SearchResult />
       </Fragment>
     )
   }
@@ -112,42 +114,6 @@ class Map extends Component {
     return (
       <Fragment>
         <img src={this.props.location} alt="Map" />
-      </Fragment>
-    )
-  }
-}
-
-class Result extends Component {
-  constructor(props) {
-    super(props);
-    this.state = { location: '' }
-  }
-  render() {
-    return (
-      <Fragment>
-        <h1>Here are the results for {this.state.location}</h1>
-        <section className="results">
-          <div className="weather">
-            <h2>Results from the Dark Sky API</h2>
-            <p>TBD</p>
-          </div>
-          <div className="events">
-            <h2>Results from the Yelp API</h2>
-            <p>TBD</p>
-          </div>
-          <div className="eventbrite">
-            <h2>Results from the Eventbrite API</h2>
-            <p>TBD</p>
-          </div>
-          <div className="movies">
-            <h2>Results from The Movie DB API</h2>
-            <p>TBD</p>
-          </div>
-          <div className="trails">
-            <h2>Results from the Hiking Project API</h2>
-            <p>TBD</p>
-          </div>
-        </section>
       </Fragment>
     )
   }
