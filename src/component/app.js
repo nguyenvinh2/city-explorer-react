@@ -1,13 +1,19 @@
 import React, { Component } from 'react';
 import { Fragment } from 'react';
-import { SearchForm } from './component/searchForm';
-import { IntroForm } from './component/introForm';
-import './result.css';
+import { SearchForm } from './search-form';
+import { IntroForm } from './intro-form';
+import superagent from 'superagent';
+import '../result.css';
 
 class App extends Component {
   constructor(props) {
     super(props);
-    this.state = {geocodeBoolean: false, backendBoolean: false, backendUrl: '', geocodeKey: ''}
+    this.state = {
+      geocodeBoolean: false,
+      backendBoolean: false, 
+      backendUrl: '',
+      geocodeKey: '',
+    }
     
     this.onGeocodeSubmit = (event) => {
       console.log(this.state.geocodeKey);
@@ -34,7 +40,7 @@ class App extends Component {
     const showSearch = this.state.geocodeBoolean && this.state.backendBoolean;
     let page;
     if (showSearch) {
-      page = <Main/>;
+      page = <Main geocodeKey = {this.state.geocodeKey} backendUrl = {this.state.backendUrl}/>;
     } else {
       page = <IntroForm onGeocodeSubmit = {this.onGeocodeSubmit} onBackendSubmit= {this.onBackendSubmit} onChangeBackend = {this.onChangeBackend} onChangeGeocode = {this.onChangeGeocode} backendBoolean = {this.state.backendBoolean} geocodeBoolean = {this.state.geocodeBoolean}/>;
     }
@@ -59,36 +65,53 @@ class Header extends Component {
 }
 
 class Main extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      location: '',
+      geocodeKey: this.props.geocodeKey,
+      backendUrl: this.props.backendUrl,
+      locationUrl: '',
+      result:''
+    }
+
+    this.onSearchChange = (event) => {
+      this.setState({location: event.target.value});
+    }
+  
+    this.onSearchSubmit = (event) => {
+      event.preventDefault();
+      this.getLocation();
+    }
+
+    this.getLocation = () => {
+      return superagent
+        .get(`${this.state.backendUrl}/location?data={data:${this.state.location}}`)
+        .then(res => {
+          console.log(res);
+          this.setState({
+            result: res.body, 
+            locationUrl:`https://maps.googleapis.com/maps/api/staticmap?center=${res.body.latitude}%2c%20${res.body.longitude}&zoom=13&size=600x300&maptype=roadmap&key=${this.state.geocodeKey}`});
+        });
+    }
+  }
+
   render() {
     return (
       <Fragment>
-        <Search />
-        <Map />
+        <SearchForm location = {this.state.location} onSearchChange = {this.onSearchChange} onSearchSubmit = {this.onSearchSubmit}/>
+        <Map geocodeKey = {this.state.geocodeKey} location = {this.state.locationUrl}/>
         <Result />
       </Fragment>
     )
   }
 }
 
-class Search extends Component {
-  render() {
-    return (
-      <Fragment>
-        <SearchForm />
-      </Fragment>
-    )
-  }
-}
-
 class Map extends Component {
-  constructor(props) {
-    super(props);
-    this.state = { key: '', url: `placeholder url` };
-  }
   render() {
     return (
       <Fragment>
-        <img src={this.state.url} alt="Map" />
+        <img src={this.props.location} alt="Map" />
       </Fragment>
     )
   }
