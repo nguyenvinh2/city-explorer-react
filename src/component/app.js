@@ -68,7 +68,7 @@ class Main extends Component {
       result: null,
       weather: null,
       yelp: null,
-      eventbrite: null,
+      events: null,
       movies: null,
       trails: null,
     }
@@ -79,9 +79,9 @@ class Main extends Component {
   
     this.onSearchSubmit = (event) => {
       event.preventDefault();
-      this.setState({result: null})
-      this.setState({locationUrl:null})
-      this.getLocation();
+      this.setState({location: event.target.search.value}, () => {;
+        this.getLocation();
+      });
     }
 
     this.getLocation = () => {
@@ -92,70 +92,30 @@ class Main extends Component {
           this.setState({
             result: res.body, 
             locationUrl:`https://maps.googleapis.com/maps/api/staticmap?center=${res.body.latitude}%2c%20${res.body.longitude}&zoom=13&size=600x300&maptype=roadmap&key=${this.props.geocodeKey}`});
-            this.getWeather(res);
-            this.getYelp(res);
-            this.getEventbrite(res);
-            this.getMovies(res);
-            this.getTrails(res);
+            this.backend(res, 'weather');
+            this.backend(res, 'yelp');
+            this.backend(res, 'events');
+            this.backend(res, 'movies');
+            this.backend(res, 'trails');
         });
     }
 
-    this.getWeather = (res) => {
+    this.backend = (res, item) => {
       return superagent
-        .get(`${this.props.backendUrl}/weather`)
+        .get(`${this.props.backendUrl}/${item}`)
         .query({ data: res.body })
         .then(res => {
-          this.setState({weather: res.body});
+          this.setState({[item]: res.body});
         })
     }
-
-    this.getYelp = (res) =>
-    {
-      return superagent
-      .get(`${this.props.backendUrl}/yelp`)
-      .query({ data: res.body })
-      .then(res => {
-        this.setState({yelp: res.body});
-      })
-    }
-
-    this.getEventbrite = (res) =>
-    {
-      return superagent
-      .get(`${this.props.backendUrl}/events`)
-      .query({ data: res.body })
-      .then(res => {
-        this.setState({eventbrite: res.body});
-      })
-    }
-
-    this.getMovies = (res) =>
-    {
-      return superagent
-      .get(`${this.props.backendUrl}/movies`)
-      .query({ data: res.body })
-      .then(res => {
-        this.setState({movies: res.body});
-      })
-    }
-
-    this.getTrails = (res) =>
-    {
-      return superagent
-      .get(`${this.props.backendUrl}/trails`)
-      .query({ data: res.body })
-      .then(res => {
-        this.setState({trails: res.body});
-      })
-    }
   }
-
+  
   render() {
     return (
       <Fragment>
-        <SearchForm location = {this.state.location} onSearchChange = {this.onSearchChange} onSearchSubmit = {this.onSearchSubmit}/>
+        <SearchForm location = {this.state.location} onSearchSubmit = {this.onSearchSubmit}/>
         <Map location = {this.state.locationUrl}/>
-        <SearchResult result = {this.state.result} weather = {this.state.weather} yelp = {this.state.yelp} eventbrite = {this.state.eventbrite} movies = {this.state.movies} trails = {this.state.trails}/>
+        <SearchResult result = {this.state.result} weather = {this.state.weather} yelp = {this.state.yelp} events = {this.state.events} movies = {this.state.movies} trails = {this.state.trails}/>
       </Fragment>
     )
   }

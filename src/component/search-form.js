@@ -8,7 +8,7 @@ export class SearchForm extends Component {
         <form onSubmit={event => this.props.onSearchSubmit(event)}>
           <label>
             Search for a location
-          <input type="text" placeholder="Enter a location here" onChange = {event =>  this.props.onSearchChange(event)}/>
+          <input type="text" name="search" placeholder="Enter a location here"/>
           </label>
           <button>Explore!</button>
         </form>
