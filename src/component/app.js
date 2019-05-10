@@ -3,8 +3,8 @@ import { Fragment } from 'react';
 import { SearchForm } from './search-form';
 import { IntroForm } from './intro-form';
 import { SearchResult } from './search-results';
+import { Map } from './map';
 import superagent from 'superagent';
-import '../result.css';
 
 class App extends Component {
   constructor(props) {
@@ -105,27 +105,26 @@ class Main extends Component {
         .get(`${this.props.backendUrl}/${item}`)
         .query({ data: res.body })
         .then(res => {
+          if(item === 'weather') {
+          }
           this.setState({[item]: res.body});
         })
     }
   }
   
   render() {
+    let component;
+    if(this.state.location !== null) {
+      component = 
+      <Fragment>
+      <Map location = {this.state.locationUrl}/>
+      <SearchResult result = {this.state.result} weather = {this.state.weather} yelp = {this.state.yelp} events = {this.state.events} movies = {this.state.movies} trails = {this.state.trails}/>;
+      </Fragment>
+    }
     return (
       <Fragment>
         <SearchForm location = {this.state.location} onSearchSubmit = {this.onSearchSubmit}/>
-        <Map location = {this.state.locationUrl}/>
-        <SearchResult result = {this.state.result} weather = {this.state.weather} yelp = {this.state.yelp} events = {this.state.events} movies = {this.state.movies} trails = {this.state.trails}/>
-      </Fragment>
-    )
-  }
-}
-
-class Map extends Component {
-  render() {
-    return (
-      <Fragment>
-        <img src={this.props.location} alt="Map" />
+        {component}
       </Fragment>
     )
   }

@@ -1,0 +1,53 @@
+@import url('https://fonts.googleapis.com/css?family=Acme|Josefin+Sans|Muli');
+
+body {
+  font-family: 'Josefin Sans', sans-serif;
+  background-color: #D9D9D9;
+  text-align: center;
+}
+img {
+  margin: 10px;
+}
+
+h1{
+  margin-top: 150px; 
+  font-size: 5vw;
+  color: #4484CE;
+  font-family: 'Acme', sans-serif;
+  font-weight: bolder;
+}
+
+h2 {
+  font-size: 25px;
+  font-family: 'Acme', sans-serif;
+  font-weight: bolder;
+}
+
+p {
+  text-align: center;
+  font-style: italic;
+  margin-top: $margin;
+  font-size: $font_size;
+}
+
+label {
+  text-align: center;
+  font-style: italic;
+  margin-top: $margin;
+  font-size: $font_size;
+  font-weight: bolder;
+}
+
+form {
+  margin-top: $margin;
+}
+
+h4 {
+  margin-bottom: 10px;
+}
+
+li {
+  border: solid 1px;
+  margin: 1px;
+  padding: 2px;
+}

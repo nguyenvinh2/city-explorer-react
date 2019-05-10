@@ -37,11 +37,13 @@ export class SearchResult extends Component {
     return (
       <Fragment>
         {header}
+        <div className="result-container">
         <Weather results = {this.props.weather} calculateAge = {this.calculateAge}/>
         <Yelp results = {this.props.yelp} calculateAge = {this.calculateAge}/>
         <Eventbrite results = {this.props.events} calculateAge = {this.calculateAge}/>
         <Movies results = {this.props.movies} calculateAge = {this.calculateAge}/>
         <Trails results = {this.props.trails} calculateAge = {this.calculateAge}/>
+        </div>
       </Fragment>
     )
   }
