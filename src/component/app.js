@@ -13,37 +13,29 @@ class App extends Component {
       geocodeBoolean: false,
       backendBoolean: false, 
       backendUrl: '',
-      geocodeKey: '',
+      geocodeKey: JSON.parse(localStorage.getItem('geocode')),
     }
     
     this.onGeocodeSubmit = (event) => {
-      console.log(this.state.geocodeKey);
-      this.setState({geocodeBoolean:true});
       event.preventDefault();
+      this.setState({geocodeKey: event.target.geocode.value});
+      this.setState({geocodeBoolean:true});
+      localStorage.setItem('geocode', JSON.stringify(event.target.geocode.value));
     }
     this.onBackendSubmit = (event) => {
-      console.log(this.state.backendUrl);
-      this.setState({backendBoolean:true});
       event.preventDefault();
+      this.setState({backendUrl: event.target.backend.value});
+      this.setState({backendBoolean:true});
     }
-    
-    this.onChangeBackend = (event) => {
-      this.setState({backendUrl: event.target.value});
-    }
-
-    this.onChangeGeocode = (event) => {
-      this.setState({geocodeKey: event.target.value});
-    }
-
   }
 
   render() {
-    const showSearch = this.state.geocodeBoolean && this.state.backendBoolean;
+    const showSearch = (this.state.geocodeBoolean || localStorage.getItem('geocode'))&& this.state.backendBoolean;
     let page;
     if (showSearch) {
       page = <Main geocodeKey = {this.state.geocodeKey} backendUrl = {this.state.backendUrl}/>;
     } else {
-      page = <IntroForm onGeocodeSubmit = {this.onGeocodeSubmit} onBackendSubmit= {this.onBackendSubmit} onChangeBackend = {this.onChangeBackend} onChangeGeocode = {this.onChangeGeocode} backendBoolean = {this.state.backendBoolean} geocodeBoolean = {this.state.geocodeBoolean}/>;
+      page = <IntroForm onGeocodeSubmit = {this.onGeocodeSubmit} onBackendSubmit= {this.onBackendSubmit} backendBoolean = {this.state.backendBoolean} geocodeBoolean = {this.state.geocodeBoolean}/>;
     }
     return (
       <Fragment>
@@ -94,12 +86,12 @@ class Main extends Component {
 
     this.getLocation = () => {
       return superagent
-        .get(`https://city-explorer-vinh-jhia.herokuapp.com/location`)
+        .get(`${this.props.backendUrl}/location`)
         .query({data:this.state.location})
         .then(res => {
           this.setState({
             result: res.body, 
-            locationUrl:`https://maps.googleapis.com/maps/api/staticmap?center=${res.body.latitude}%2c%20${res.body.longitude}&zoom=13&size=600x300&maptype=roadmap&key=`});
+            locationUrl:`https://maps.googleapis.com/maps/api/staticmap?center=${res.body.latitude}%2c%20${res.body.longitude}&zoom=13&size=600x300&maptype=roadmap&key=${this.props.geocodeKey}`});
             this.getWeather(res);
             this.getYelp(res);
             this.getEventbrite(res);
@@ -110,7 +102,7 @@ class Main extends Component {
 
     this.getWeather = (res) => {
       return superagent
-        .get(`https://city-explorer-vinh-jhia.herokuapp.com/weather`)
+        .get(`${this.props.backendUrl}/weather`)
         .query({ data: res.body })
         .then(res => {
           this.setState({weather: res.body});
@@ -120,7 +112,7 @@ class Main extends Component {
     this.getYelp = (res) =>
     {
       return superagent
-      .get(`https://city-explorer-vinh-jhia.herokuapp.com/yelp`)
+      .get(`${this.props.backendUrl}/yelp`)
       .query({ data: res.body })
       .then(res => {
         this.setState({yelp: res.body});
@@ -130,7 +122,7 @@ class Main extends Component {
     this.getEventbrite = (res) =>
     {
       return superagent
-      .get(`https://city-explorer-vinh-jhia.herokuapp.com/events`)
+      .get(`${this.props.backendUrl}/events`)
       .query({ data: res.body })
       .then(res => {
         this.setState({eventbrite: res.body});
@@ -140,7 +132,7 @@ class Main extends Component {
     this.getMovies = (res) =>
     {
       return superagent
-      .get(`https://city-explorer-vinh-jhia.herokuapp.com/movies`)
+      .get(`${this.props.backendUrl}/movies`)
       .query({ data: res.body })
       .then(res => {
         this.setState({movies: res.body});
@@ -150,7 +142,7 @@ class Main extends Component {
     this.getTrails = (res) =>
     {
       return superagent
-      .get(`https://city-explorer-vinh-jhia.herokuapp.com/trails`)
+      .get(`${this.props.backendUrl}/trails`)
       .query({ data: res.body })
       .then(res => {
         this.setState({trails: res.body});
