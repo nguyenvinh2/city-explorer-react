@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/city-explorer-react/static/css/main.f071af63.chunk.css",
+    "main.js": "/city-explorer-react/static/js/main.7692ddfd.chunk.js",
+    "main.js.map": "/city-explorer-react/static/js/main.7692ddfd.chunk.js.map",
+    "runtime~main.js": "/city-explorer-react/static/js/runtime~main.5f8c59d2.js",
+    "runtime~main.js.map": "/city-explorer-react/static/js/runtime~main.5f8c59d2.js.map",
+    "static/js/2.276fd1c9.chunk.js": "/city-explorer-react/static/js/2.276fd1c9.chunk.js",
+    "static/js/2.276fd1c9.chunk.js.map": "/city-explorer-react/static/js/2.276fd1c9.chunk.js.map",
+    "index.html": "/city-explorer-react/index.html",
+    "precache-manifest.19008342cb134dae6ad0e7fcdb20db1b.js": "/city-explorer-react/precache-manifest.19008342cb134dae6ad0e7fcdb20db1b.js",
+    "service-worker.js": "/city-explorer-react/service-worker.js",
+    "static/css/main.f071af63.chunk.css.map": "/city-explorer-react/static/css/main.f071af63.chunk.css.map"
+  }
+}
